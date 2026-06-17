@@ -4,6 +4,7 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -17,10 +18,18 @@ export const AuthProvider = ({ children }) => {
       };
 
       const token = getCookie('session');
-      if (token) {
+      const storedUser = localStorage.getItem('user');
+
+      if (token && storedUser) {
         setIsAuthenticated(true);
+        try {
+          setUser(JSON.parse(storedUser));
+        } catch (error) {
+          console.error("Failed to parse stored user", error);
+        }
       } else {
         setIsAuthenticated(false);
+        setUser(null);
       }
       setIsLoading(false);
     };
@@ -28,17 +37,21 @@ export const AuthProvider = ({ children }) => {
     checkAuth();
   }, []);
 
-  const login = () => {
+  const login = (userData) => {
     setIsAuthenticated(true);
+    setUser(userData);
+    localStorage.setItem('user', JSON.stringify(userData));
   };
 
   const logout = () => {
     document.cookie = 'session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
+    localStorage.removeItem('user');
     setIsAuthenticated(false);
+    setUser(null);
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, isLoading, login, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, user, isLoading, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

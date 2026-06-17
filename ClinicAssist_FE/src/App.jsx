@@ -7,6 +7,7 @@ import ErrorPage from './pages/ErrorPage';
 import { AuthProvider } from './Auth/AuthContext';
 import ProtectedRoute from './Auth/ProtectedRoute';
 import Dashboard from './pages/Dashboard';
+import DashboardLayout from './components/layout/DashboardLayout';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -35,8 +36,13 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       {
-        path: '/dashboard',
-        element: <Dashboard />,
+        element: <DashboardLayout />,
+        children: [
+          {
+            path: '/dashboard',
+            element: <Dashboard />,
+          }
+        ]
       }
     ]
   },

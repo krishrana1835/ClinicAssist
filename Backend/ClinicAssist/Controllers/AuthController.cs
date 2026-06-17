@@ -1,4 +1,6 @@
-﻿using ClinicAssist.Dtos.Auth;
+﻿using ClinicAssist.Common;
+using ClinicAssist.Dtos.Auth;
+using ClinicAssist.Dtos.Users;
 using ClinicAssist.Services.Interface;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,16 +11,20 @@ namespace ClinicAssist.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
+        private readonly IUserService _userService;
 
-        public AuthController(IAuthService authService)
+        public AuthController(IAuthService authService, IUserService userService)
         {
             _authService = authService;
+            _userService = userService;
         }
 
         [HttpPost("Login")]
         public async Task<IActionResult> Login(LoginRequest request)
         {
             var token = await _authService.LoginAsync(request);
+
+            var user = await _userService.GetUserByEmail(request.Email);
 
             // 1. HttpOnly secure token cookie (for auth)
             Response.Cookies.Append(
@@ -45,18 +51,14 @@ namespace ClinicAssist.Controllers
                 });
 
             // 3. Send token back to frontend (receiver side)
-            return Ok(new
-            {
-                message = "Login successful",
-                accessToken = token,
-                session = 1
-            });
+            return Ok(new ApiResponse<UserResponse>(true, "Login Success", user));
         }
 
         [HttpPost("Logout")]
         public IActionResult Logout()
         {
             Response.Cookies.Delete("access_token");
+            Response.Cookies.Delete("session");
 
             return Ok();
         }

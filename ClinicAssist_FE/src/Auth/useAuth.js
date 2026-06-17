@@ -4,7 +4,7 @@ import api from '../axios/axiosInstense';
 export const useLogin = (options = {}) => {
   return useMutation({
     mutationFn: (credentials) => {
-      return api.post('api/Auth/Login', credentials).then((res) => res.data);
+      return api.post('api/Auth/Login', credentials).then((res) => res.data.data);
     },
     ...options,
   });

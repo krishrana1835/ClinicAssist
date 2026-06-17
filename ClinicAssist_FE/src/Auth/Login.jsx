@@ -35,7 +35,7 @@ export default function Login() {
 		onSuccess: (data) => {
 			// Assuming backend returns a token or sets it in cookies. 
 			// We call login to update the context and navigate to dashboard.
-			login(data?.token);
+			login(data);
 			navigate("/dashboard");
 		}
 	});
@@ -90,7 +90,7 @@ export default function Login() {
 					<h1 className="text-5xl font-bold text-white mb-6 tracking-tight">
 						ClinicAssist
 					</h1>
-					<p className="text-blue-100 text-lg max-w-md mx-auto leading-relaxed">
+					<p className="text-blue-100 text-lg mx-auto leading-relaxed">
 						Streamlining patient care, prescriptions, and clinic management through secure, QR-driven workflows.
 					</p>
 				</div>
@@ -98,7 +98,7 @@ export default function Login() {
 
 			{/* Right Side - Login Form */}
 			<div className="w-full lg:w-1/2 flex items-center justify-center p-4 sm:p-8 h-full">
-				<div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-8 max-h-full overflow-y-auto">
+				<div className="w-full bg-white rounded-2xl shadow-lg p-8 max-h-full overflow-y-auto">
 
 					{/* Mobile Header (Only shows on small screens) */}
 					<div className="lg:hidden flex items-center gap-3 mb-8 justify-center">
@@ -322,7 +322,8 @@ export default function Login() {
 									)}
 								</div>
 
-								<div className={`transition-all duration-300 p-1 ease-in-out overflow-hidden ${registrationType === "patient" ? "max-h-100 opacity-100" : "max-h-0 opacity-0"}`}>
+								{/* Removed p-1 from here and added to inner content wrapper. Added overflow-visible when expanded. */}
+								<div className={`transition-all duration-300 ease-in-out ${registrationType === "patient" ? "max-h-[9999px] opacity-100 overflow-visible" : "max-h-0 opacity-0 overflow-hidden"}`}>
 									<>
 										<div>
 											<label className="block text-sm font-medium text-gray-700 mb-1.5">Date of Birth</label>
@@ -364,7 +365,9 @@ export default function Login() {
 									</>
 								</div>
 
-								<div className={`transition-all duration-300 p-1 ease-in-out overflow-hidden ${registrationType === "doctor" ? "max-h-100 opacity-100" : "max-h-0 opacity-0"}`}>
+								{/* Removed p-1 from here and added to inner content wrapper. Added overflow-visible when expanded. */}
+								<div className={`transition-all duration-300 ease-in-out ${registrationType === "doctor" ? "max-h-[9999px] opacity-100 overflow-visible" : "max-h-0 opacity-0 overflow-hidden"}`}>
+									<div className="p-1"> {/* Added p-1 to an inner div to maintain consistent padding */}
 									<label className="block text-sm font-medium text-gray-700 mb-1.5">Specialization</label>
 									<textarea rows={3} placeholder="Cardiology" {...register("specialization")} className="w-full border border-gray-300 rounded-xl px-4 py-2 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all shadow-sm"></textarea>
 									{errors.specialization && (
@@ -372,6 +375,7 @@ export default function Login() {
 											{errors.specialization.message}
 										</p>
 									)}
+									</div>
 								</div>
 
 								<button
