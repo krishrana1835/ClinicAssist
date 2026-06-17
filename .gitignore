@@ -1,0 +1,42 @@
+########################################
+# IDE / Editor
+########################################
+.idea/
+.vs/
+*.user
+*.suo
+
+ClinicAssist_FE/.vscode/
+.vscode/
+
+########################################
+# .NET (Backend - ClinicAssist)
+########################################
+Backend/ClinicAssist/bin/
+Backend/ClinicAssist/obj/
+
+# Logs
+Backend/ClinicAssist/logs/
+
+# Config (be careful — only ignore secrets if needed)
+Backend/ClinicAssist/appsettings.json
+Backend/ClinicAssist/.config/
+
+# Static build output
+Backend/ClinicAssist/wwwroot/*
+!Backend/ClinicAssist/wwwroot/logo.jpg
+
+########################################
+# Node / Vite (Frontend - ClinicAssist_FE)
+########################################
+node_modules/
+ClinicAssist_FE/node_modules/
+main-frontend/node_modules/
+
+dist/
+ClinicAssist_FE/dist/
+
+########################################
+# Misc
+########################################
+*.log
