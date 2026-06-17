@@ -88,9 +88,6 @@ export default function DashboardLayout() {
                     </nav>
 
                     <div className="mt-auto pt-md border-t border-outline-variant space-y-base">
-                        <button className="w-full bg-primary text-on-primary py-sm rounded-lg font-bold hover:bg-primary-container transition-colors mb-md cursor-pointer">
-                            Add New Clinic
-                        </button>
                         <Link onClick={closeSidebarMobile} to="/support" className="flex items-center gap-md px-md py-sm rounded-lg text-on-tertiary-fixed-variant hover:bg-surface-container-highest">
                             <span className="material-symbols-outlined">contact_support</span>
                             <span className="font-body-md">Support</span>

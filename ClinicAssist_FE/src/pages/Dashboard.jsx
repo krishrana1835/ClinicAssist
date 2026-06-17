@@ -1,7 +1,9 @@
 import { useState } from 'react';
-import AddNewClinic from '../components/dashboard/AddNewClinic';
-import ListClinics from '../components/dashboard/ListClinics';
-import ListPatient from '../components/dashboard/ListPatient';
+import ClinicActionModal from '../components/Clinic/ClinicActionModal';
+import ListClinics from '../components/Clinic/ListClinics';
+import ListPatient from '../components/Clinic/ListPatient';
+import { useAuthContext } from '../Auth/AuthContext';
+import { useGetClinics } from '../components/Clinic/useClinic';
 
 const initialPatientData = {
     "Downtown General": [
@@ -19,21 +21,27 @@ const initialPatientData = {
     ]
 };
 
-const clinicsList = [
-    { name: "Downtown General", address: "451 Medical Plaza, NY 10001", patientsCount: "1,240", colorClass: "bg-primary" },
-    { name: "North Star Clinic", address: "12 Health Way, NJ 07302", patientsCount: "890", colorClass: "bg-secondary" },
-    { name: "Riverdale Pediatrics", address: "88 Riverside Dr, NY 10463", patientsCount: "562", colorClass: "bg-tertiary-container" },
-];
-
 export default function Dashboard() {
+    const { user } = useAuthContext();
     const [selectedClinic, setSelectedClinic] = useState(null);
+    const [editingClinic, setEditingClinic] = useState(null);
+
+    const { data: clinicsList = [] } = useGetClinics(user.roleId);
 
     const handleClinicClick = (clinicName) => {
         setSelectedClinic(clinicName);
-        // Ensure scrolling slightly down to the patient list
         setTimeout(() => {
             document.getElementById('patientListSection')?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }, 100);
+    };
+
+    const handleCloseEdit = () => {
+        setEditingClinic(null);
+    };
+
+    const handleEditClinic = (clinic) => {
+        setEditingClinic(clinic);
+        document.getElementById('ClinicActionModalSection')?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     };
 
     return (
@@ -46,10 +54,12 @@ export default function Dashboard() {
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-lg items-start">
-                <AddNewClinic />
+                <div id="ClinicActionModalSection" className="lg:col-span-4">
+                    <ClinicActionModal clinicToEdit={editingClinic} onClose={handleCloseEdit} />
+                </div>
 
                 <section className="lg:col-span-8 space-y-md">
-                    <ListClinics data={clinicsList} onClinicClick={handleClinicClick} />
+                    <ListClinics data={clinicsList} onClinicClick={handleClinicClick} onEditClinic={handleEditClinic} />
                     <ListPatient data={initialPatientData} selectedClinic={selectedClinic} onClose={() => setSelectedClinic(null)} />
                 </section>
             </div>

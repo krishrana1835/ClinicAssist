@@ -8,5 +8,6 @@
         public string Name { get; set; } = null!;
         public string ContactNumber { get; set; } = null!;
         public DateTime CreatedAt { get; set; }
+        public int RoleId { get; set; }
     }
 }
