@@ -1,14 +1,19 @@
 import { useState, useEffect } from "react";
+import { useNavigate, Navigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema, loginDefaultValues } from "./loginSchema";
 import { doctorRegisterSchema, doctorRegisterDefaultValues } from "./doctorRegisterSchema";
 import { patientRegisterSchema, patientRegisterDefaultValues } from "./patientRegisterSchema";
 import { useLogin, useRegisterDoctor, useRegisterPatient } from "./useAuth";
+import { useAuthContext } from "./AuthContext";
 
 export default function Login() {
 	const [activeTab, setActiveTab] = useState("login");
 	const [registrationType, setRegistrationType] = useState("patient"); // 'patient' or 'doctor'
+	
+	const navigate = useNavigate();
+	const { login, isAuthenticated } = useAuthContext();
 
 	const {
 		register,
@@ -26,9 +31,20 @@ export default function Login() {
 		defaultValues: activeTab === "login" ? loginDefaultValues : {}, // Reset default values when switching tabs
 	}); 
 
-	const loginMutation = useLogin();
-	const registerDoctorMutation = useRegisterDoctor();
-	const registerPatientMutation = useRegisterPatient();
+	const loginMutation = useLogin({
+		onSuccess: (data) => {
+			// Assuming backend returns a token or sets it in cookies. 
+			// We call login to update the context and navigate to dashboard.
+			login(data?.token);
+			navigate("/dashboard");
+		}
+	});
+	const registerDoctorMutation = useRegisterDoctor({
+		onSuccess: () => setActiveTab("login")
+	});
+	const registerPatientMutation = useRegisterPatient({
+		onSuccess: () => setActiveTab("login")
+	});
 
 	const onSubmit = async (data) => {
 		if (activeTab === "login") {
@@ -53,6 +69,11 @@ export default function Login() {
 			reset({});
 		}
 	}, [activeTab, registrationType, reset]);
+
+	// Redirect if already authenticated
+	if (isAuthenticated) {
+		return <Navigate to="/dashboard" replace />;
+	}
 
 	return (
 		<div className="min-h-screen flex w-full font-sans bg-white">
