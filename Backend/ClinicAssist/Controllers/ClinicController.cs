@@ -1,4 +1,4 @@
-﻿using ClinicAssist.Common;
+using ClinicAssist.Common;
 using ClinicAssist.Dtos.Clinic;
 using ClinicAssist.Dtos.Patient;
 using ClinicAssist.Services.Interface;
@@ -37,21 +37,21 @@ namespace ClinicAssist.Controllers
         public async Task<IActionResult> CreateClinic(CreateClinicDto createClinicDto)
         {
             await _clinicService.CreateClinic(createClinicDto);
-            return Created();
+            return StatusCode(201, new ApiResponse<object>(true, "Clinic created successfully"));
         }
 
         [HttpPut("{clinic_id}")]
         public async Task<IActionResult> UpdateClinic(int clinic_id, EditClinicDto editClinicDto)
         {
             await _clinicService.UpdateClinic(clinic_id, editClinicDto);
-            return Ok();
+            return StatusCode(200, new ApiResponse<object>(true, "Patient Updated successfully"));
         }
 
         [HttpDelete("{clinic_id}")]
         public async Task<IActionResult> DeleteClinic(int clinic_id) 
         {
             await _clinicService.DeleteClinic(clinic_id);
-            return Ok();
+            return StatusCode(200, new ApiResponse<object>(true, "Patient deleted successfully"));
         }
     }
 }

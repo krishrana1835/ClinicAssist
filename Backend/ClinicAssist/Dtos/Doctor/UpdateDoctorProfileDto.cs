@@ -1,9 +1,8 @@
-﻿namespace ClinicAssist.Dtos.Users
+﻿namespace ClinicAssist.Dtos.Doctor
 {
-    public class RegisterDoctorDto
+    public class UpdateDoctorProfileDto
     {
         public string Email { get; set; } = null!;
-        public string? Password { get; set; } = null!;
         public string Name { get; set; } = null!;
         public string Specialization { get; set; } = null!;
         public string ContactNo { get; set; } = null!;

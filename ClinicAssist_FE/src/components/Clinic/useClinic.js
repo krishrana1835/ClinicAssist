@@ -5,10 +5,11 @@ export const useCreateClinic = (options = {}) => {
 	const queryClinet = useQueryClient();
 	return useMutation({
 		mutationFn: (clinicData) => {
-			return api.post('api/Clinic', clinicData).then((res) => res.data);
+			return api.post('api/Clinic', clinicData).then((res) => res.data.data);
 		},
 		onSuccess: () => {
 			queryClinet.invalidateQueries({ queryKey: ['clinics'] });
+			queryClinet.invalidateQueries({ queryKey: ['doctorProfile'] }); // Invalidate patients to refresh patient lists
 		},
 		...options,
 	});
@@ -28,7 +29,7 @@ export const useUpdateClinic = (options = {}) => {
 	const queryClient = useQueryClient();
 	return useMutation({
 		mutationFn: ({ clinicId, clinicData }) => {
-			return api.put(`api/Clinic/${clinicId}`, clinicData).then((res) => res.data);
+			return api.put(`api/Clinic/${clinicId}`, clinicData).then((res) => res.data.data);
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ['clinics'] });
@@ -40,8 +41,11 @@ export const useUpdateClinic = (options = {}) => {
 export const useDeleteClinic = (options = {}) => {
 	const queryClient = useQueryClient();
 	return useMutation({
-		mutationFn: (clinicId) => api.delete(`api/Clinic/${clinicId}`).then((res) => res.data),
-		onSuccess: () => queryClient.invalidateQueries({ queryKey: ['clinics'] }),
+		mutationFn: (clinicId) => api.delete(`api/Clinic/${clinicId}`).then((res) => res.data.data),
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: ['clinics'] });
+			queryClient.invalidateQueries({ queryKey: ['doctorProfile'] }); // Invalidate patients to refresh patient lists
+		},
 		...options,
 	});
 };

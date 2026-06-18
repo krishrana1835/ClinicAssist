@@ -6,8 +6,12 @@ import NotFound from './pages/NotFound';
 import ErrorPage from './pages/ErrorPage';
 import { AuthProvider } from './Auth/AuthContext';
 import ProtectedRoute from './Auth/ProtectedRoute';
-import Dashboard from './pages/Dashboard';
+import ClinicManagement from './components/Clinic/ClinicManagement';
 import DashboardLayout from './components/layout/DashboardLayout';
+import { Toaster } from 'react-hot-toast';
+import DoctorProfile from './components/Profile/DoctorProfile';
+import DoctorDashboard from './components/Dashboard/DoctorDashboard';
+import ClinicSettings from './components/Clinic/ClinicSettings';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -41,7 +45,18 @@ const router = createBrowserRouter([
         children: [
           {
             path: '/dashboard',
-            element: <Dashboard />,
+            element: <DoctorDashboard />
+          },
+          {
+            path: '/clinic',
+            children: [
+              { index: true, element: <ClinicManagement /> },
+              { path: ':clinicId/settings', element: <ClinicSettings /> },
+            ],
+          },
+          {
+            path: '/profile',
+            element: <DoctorProfile />
           }
         ]
       }
@@ -57,6 +72,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
+        <Toaster position="top-right" />
         <RouterProvider router={router} />
       </AuthProvider>
     </QueryClientProvider>

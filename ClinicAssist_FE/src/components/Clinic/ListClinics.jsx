@@ -1,5 +1,6 @@
 import { useReactTable, getCoreRowModel, flexRender, createColumnHelper } from '@tanstack/react-table';
 import { useMemo } from 'react';
+import { Link } from 'react-router-dom';
 import { useDeleteClinic } from './useClinic';
 
 const columnHelper = createColumnHelper();
@@ -24,6 +25,14 @@ export default function ListClinics({ data, onClinicClick, onEditClinic }) {
             header: 'Clinic Name',
             cell: info => (
                 <div className="flex items-center gap-sm">
+                    <Link 
+                        to={`/clinic/${info.row.original.clinicId}/settings`}
+                        onClick={(e) => e.stopPropagation()}
+                        className="text-on-surface-variant hover:text-primary transition-colors flex items-center"
+                        title="Clinic Settings"
+                    >
+                        <span className="material-symbols-outlined text-[20px]">settings</span>
+                    </Link>
                     <div className={`w-2 h-8 ${info.row.original.colorClass} rounded-full`}></div>
                     <span className="font-body-md font-semibold">{info.getValue()}</span>
                 </div>

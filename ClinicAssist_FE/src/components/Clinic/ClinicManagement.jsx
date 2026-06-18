@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import ClinicActionModal from '../components/Clinic/ClinicActionModal';
-import ListClinics from '../components/Clinic/ListClinics';
-import ListPatient from '../components/Clinic/ListPatient';
-import { useAuthContext } from '../Auth/AuthContext';
-import { useGetClinics } from '../components/Clinic/useClinic';
+import ClinicActionModal from './ClinicActionModal';
+import ListClinics from './ListClinics';
+import ListPatient from './ListPatient';
+import { useAuthContext } from '../../Auth/AuthContext';
+import { useGetClinics } from './useClinic';
 
 const initialPatientData = {
     "Downtown General": [
@@ -21,7 +21,7 @@ const initialPatientData = {
     ]
 };
 
-export default function Dashboard() {
+export default function ClinicManagement() {
     const { user } = useAuthContext();
     const [selectedClinic, setSelectedClinic] = useState(null);
     const [editingClinic, setEditingClinic] = useState(null);

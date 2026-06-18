@@ -60,7 +60,7 @@ namespace ClinicAssist.Controllers
             Response.Cookies.Delete("access_token");
             Response.Cookies.Delete("session");
 
-            return Ok();
+            return Ok(new ApiResponse<object>(true, "Logged out successfully"));
         }
     }
 }

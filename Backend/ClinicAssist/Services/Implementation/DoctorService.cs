@@ -4,6 +4,7 @@ using ClinicAssist.Exceptions;
 using ClinicAssist.Services.Interface;
 using ClinicAssist.Models;
 using Microsoft.EntityFrameworkCore;
+using ClinicAssist.Dtos.Doctor;
 
 namespace ClinicAssist.Services.Implementation
 {
@@ -14,6 +15,25 @@ namespace ClinicAssist.Services.Implementation
         public DoctorService(AppDbContext context)
         {
             _context = context;
+        }
+
+        public async Task<DoctorResponseDto> GetDoctorProfileAsync(int doctorId)
+        { 
+            var doctor = await _context.Doctors.Include(d => d.user).Include(d => d.Clinics).ThenInclude(c => c.Patient_Clinic_Registrations).FirstOrDefaultAsync(d => d.doctor_id == doctorId);
+            if(doctor == null)
+            {
+                throw new NotFoundException("Doctor does not exist");
+            }
+            var profile = new DoctorResponseDto
+            {
+                Name = doctor.user.name,
+                Email = doctor.user.email,
+                ContactNo = doctor.user.contact_number,
+                Specialization = doctor.specialization,
+                TotalClinic = doctor.Clinics.Count(), 
+                TotalPatient = doctor.Clinics.Sum(c => c.Patient_Clinic_Registrations.Count()),
+            };
+            return profile;
         }
 
         public async Task CreateDoctorAsync(RegisterDoctorDto doctorDto)
@@ -59,6 +79,23 @@ namespace ClinicAssist.Services.Implementation
                 await transaction.RollbackAsync();
                 throw;
             }
+        }
+
+        public async Task UpdateDoctor(int doctorId, UpdateDoctorProfileDto doctorDto)
+        {
+            var doctor = await _context.Doctors.Include(d => d.user).FirstOrDefaultAsync(d => d.doctor_id == doctorId);
+
+            if(doctor == null)
+            {
+                throw new NotFoundException("Doctor does not exist");
+            }
+
+            doctor.specialization = doctorDto.Specialization;
+            doctor.user.name = doctorDto.Name;
+            doctor.user.email = doctorDto.Email;
+            doctor.user.contact_number = doctorDto.ContactNo;
+
+            await _context.SaveChangesAsync();
         }
     }
 }

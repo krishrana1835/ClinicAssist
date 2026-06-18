@@ -6,6 +6,7 @@
         public int clinic_id { get; set; }
         public string medicine_name { get; set; } = null!;
         public string? description { get; set; }
+        public int stock { get; set; }
 
         public Clinic? clinic { get; set; }
     }

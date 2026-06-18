@@ -76,7 +76,7 @@ export default function DashboardLayout() {
                             <span className="font-body-md">Patients</span>
                         </Link>
 
-                        <Link onClick={closeSidebarMobile} to="/settings" className={`flex items-center gap-md px-md py-sm rounded-lg transition-all ${location.pathname.startsWith('/settings') ? 'text-primary font-bold bg-secondary-container/30' : 'text-on-tertiary-fixed-variant hover:bg-surface-container-highest'}`}>
+                        <Link onClick={closeSidebarMobile} to="/clinic" className={`flex items-center gap-md px-md py-sm rounded-lg transition-all ${location.pathname.startsWith('/settings') ? 'text-primary font-bold bg-secondary-container/30' : 'text-on-tertiary-fixed-variant hover:bg-surface-container-highest'}`}>
                             <span className="material-symbols-outlined text-primary">settings_applications</span>
                             <span className="font-body-md">Clinic Settings</span>
                         </Link>
@@ -109,16 +109,13 @@ export default function DashboardLayout() {
                     </div>
                     
                     <div className="flex items-center gap-lg">
-                        <div className="flex gap-md text-on-surface-variant">
-                            <span className="material-symbols-outlined cursor-pointer hover:text-primary transition-colors">settings</span>
-                        </div>
                         
-                        <div className="flex items-center gap-sm pl-md border-l border-outline-variant cursor-pointer">
+                        <Link to="/profile" className="flex items-center gap-sm pl-md border-l border-outline-variant cursor-pointer">
                             <div className="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center border border-outline-variant overflow-hidden">
                                 <span className="material-symbols-outlined text-outline">account_circle</span>
                             </div>
                             <span className="hidden lg:block font-label-md text-on-surface">{user?.name || "User"}</span>
-                        </div>
+                        </Link>
                     </div>
                 </header>
 
