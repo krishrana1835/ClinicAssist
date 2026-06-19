@@ -25,12 +25,19 @@ namespace ClinicAssist.Controllers
             return Ok(new ApiResponse<List<ClinicResponseDto>>(true, "Clinic List", clinicList));
         }
 
-        [HttpGet("/Patient/{clinic_id}")]
-        public async Task<IActionResult> GetPatientList(int clinic_id)
+        [HttpGet("Patient/{clinic_id}")]
+        public async Task<IActionResult> GetPatientList([FromRoute]int clinic_id, [FromQuery]bool recent = false)
         {
-            var patientList = await _clinicService.ListPatientByClinicId(clinic_id);
+            var patientList = await _clinicService.ListPatientByClinicId(clinic_id, recent);
 
             return Ok(new ApiResponse<List<PatientListDto>>(true, "Patient list", patientList));
+        }
+
+        [HttpGet("Patient/Filter/{doctor_id}")]
+        public async Task<IActionResult> GetPatientListWithFilter(int doctor_id, string? name, int? clinicId, DateTime? lastVisit, int pageSize = 5, int page = 1)
+        {
+            var patientList = await _clinicService.GetPatientListWithFilters(doctor_id, name, clinicId, lastVisit, pageSize, page);
+            return Ok(new ApiResponse<PatientListResponseDto>(true, "Patient list", patientList));
         }
 
         [HttpPost]
@@ -38,6 +45,13 @@ namespace ClinicAssist.Controllers
         {
             await _clinicService.CreateClinic(createClinicDto);
             return StatusCode(201, new ApiResponse<object>(true, "Clinic created successfully"));
+        }
+
+        [HttpPost("Patient/Register")]
+        public async Task<IActionResult> RegisterPatient(PatientClinicRegistration dto)
+        {
+            await _clinicService.PatientRegistration(dto);
+            return StatusCode(201, new ApiResponse<object>(true, "Patient Registered successfully"));
         }
 
         [HttpPut("{clinic_id}")]

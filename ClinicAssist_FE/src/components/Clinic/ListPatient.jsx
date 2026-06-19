@@ -1,35 +1,27 @@
 import { useReactTable, getCoreRowModel, flexRender, createColumnHelper } from '@tanstack/react-table';
 import { useMemo } from 'react';
+import { dateFormatter } from '../../utils/utils';
 
 const columnHelper = createColumnHelper();
-
-export default function ListPatient({ data, selectedClinic, onClose }) {
-    const patients = useMemo(() => data[selectedClinic] || [], [data, selectedClinic]);
-
+ 
+export default function ListPatient({ patients, selectedClinic, onClose }) { // Changed 'data' to 'patients'
+    // The 'patients' prop is now expected to be an array of PatientListDto for the selected clinic.
+    // No need for useMemo to filter from a larger data object.
     const columns = useMemo(() => [
         columnHelper.accessor('name', {
             header: 'Patient Name',
             cell: info => <span className="font-body-md text-on-surface">{info.getValue()}</span>,
         }),
         columnHelper.accessor('lastVisit', {
-            header: 'Last Visit',
+            header: 'Last Visited',
+            cell: info => <span className="font-body-sm text-on-surface-variant">{dateFormatter(info.getValue())}</span>,
+        }),
+        columnHelper.accessor('contactNumber', {
+            header: 'Contact Number',
             cell: info => <span className="font-body-sm text-on-surface-variant">{info.getValue()}</span>,
         }),
-        columnHelper.accessor('status', {
-            header: 'Status',
-            cell: info => {
-                const status = info.getValue();
-                return (
-                    <span className={`px-xs py-1 rounded text-[10px] font-bold uppercase tracking-wider ${
-                        status === 'Critical' ? 'bg-error-container text-on-error-container' : 
-                        status === 'Review Required' ? 'bg-primary-container text-on-primary-container' : 
-                        'bg-secondary-container/40 text-on-secondary-container'
-                    }`}>
-                        {status}
-                    </span>
-                );
-            },
-        }),
+        
+
         columnHelper.display({
             id: 'action',
             header: () => <div className="text-right">Quick Action</div>,
@@ -41,7 +33,7 @@ export default function ListPatient({ data, selectedClinic, onClose }) {
                 </div>
             ),
         }),
-    ], []);
+    ], []); // Removed 'data' and 'selectedClinic' from dependencies as 'patients' is now directly passed
 
     const table = useReactTable({
         data: patients,
@@ -52,7 +44,7 @@ export default function ListPatient({ data, selectedClinic, onClose }) {
     if (!selectedClinic) {
         return (
             <div className="bg-surface-container-low border-2 border-dashed border-outline-variant rounded-xl p-xl flex flex-col items-center justify-center text-center">
-                <span className="material-symbols-outlined text-outline text-[48px] mb-md opacity-40">groups</span>
+                <span className="material-symbols-outlined text-outline text-[48px] mb-md opacity-40">group</span>
                 <p className="font-body-md text-on-surface-variant">Select a clinic to view patient records</p>
             </div>
         );
@@ -97,8 +89,8 @@ export default function ListPatient({ data, selectedClinic, onClose }) {
                                 </tr>
                             ))}
                             {patients.length === 0 && (
-                                <tr>
-                                    <td colSpan="4" className="px-md py-xl text-center text-on-surface-variant font-body-md">
+                                <tr> 
+                                    <td colSpan={columns.length} className="px-md py-xl text-center text-on-surface-variant font-body-md">
                                         No patients found for this clinic.
                                     </td>
                                 </tr>

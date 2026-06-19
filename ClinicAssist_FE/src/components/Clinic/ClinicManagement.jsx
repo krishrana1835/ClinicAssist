@@ -3,23 +3,7 @@ import ClinicActionModal from './ClinicActionModal';
 import ListClinics from './ListClinics';
 import ListPatient from './ListPatient';
 import { useAuthContext } from '../../Auth/AuthContext';
-import { useGetClinics } from './useClinic';
-
-const initialPatientData = {
-    "Downtown General": [
-        { name: "Eleanor Rigby", lastVisit: "Oct 12, 2023", status: "Stable" },
-        { name: "John Doe", lastVisit: "Oct 15, 2023", status: "Stable" },
-        { name: "Sarah Smith", lastVisit: "Oct 20, 2023", status: "Review Required" }
-    ],
-    "North Star Clinic": [
-        { name: "Michael Chang", lastVisit: "Sep 28, 2023", status: "Critical" },
-        { name: "Alice Cooper", lastVisit: "Oct 05, 2023", status: "Stable" }
-    ],
-    "Riverdale Pediatrics": [
-        { name: "Baby Jamie", lastVisit: "Oct 18, 2023", status: "Stable" },
-        { name: "Sophie Turner", lastVisit: "Oct 19, 2023", status: "Routine" }
-    ]
-};
+import { useGetClinicPatients, useGetClinics } from './useClinic';
 
 export default function ClinicManagement() {
     const { user } = useAuthContext();
@@ -27,6 +11,7 @@ export default function ClinicManagement() {
     const [editingClinic, setEditingClinic] = useState(null);
 
     const { data: clinicsList = [] } = useGetClinics(user.roleId);
+    const { data: patientList = [] } = useGetClinicPatients(selectedClinic?.clinicId, true);
 
     const handleClinicClick = (clinicName) => {
         setSelectedClinic(clinicName);
@@ -60,7 +45,7 @@ export default function ClinicManagement() {
 
                 <section className="lg:col-span-8 space-y-md">
                     <ListClinics data={clinicsList} onClinicClick={handleClinicClick} onEditClinic={handleEditClinic} />
-                    <ListPatient data={initialPatientData} selectedClinic={selectedClinic} onClose={() => setSelectedClinic(null)} />
+                    <ListPatient patients={patientList} selectedClinic={selectedClinic?.name} onClose={() => setSelectedClinic(null)} /> {/* Updated to pass patientList directly */}
                 </section>
             </div>
         </>

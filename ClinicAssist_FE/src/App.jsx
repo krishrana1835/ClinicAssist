@@ -12,6 +12,7 @@ import { Toaster } from 'react-hot-toast';
 import DoctorProfile from './components/Profile/DoctorProfile';
 import DoctorDashboard from './components/Dashboard/DoctorDashboard';
 import ClinicSettings from './components/Clinic/ClinicSettings';
+import PatientDirectory from './components/Patient/PatientDirectory';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -52,12 +53,14 @@ const router = createBrowserRouter([
             children: [
               { index: true, element: <ClinicManagement /> },
               { path: ':clinicId/settings', element: <ClinicSettings /> },
+              
             ],
           },
           {
             path: '/profile',
             element: <DoctorProfile />
-          }
+          },
+          { path: 'patient', element: <PatientDirectory /> }
         ]
       }
     ]

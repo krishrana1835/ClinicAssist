@@ -10,5 +10,6 @@
         public DateTime? Dob { get; set; }
         public string? BloodGroup { get; set; }
         public int Weight { get; set; }
+        public DateTime? LastVisit { get; set; }
     }
 }

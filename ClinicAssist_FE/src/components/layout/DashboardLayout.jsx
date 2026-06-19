@@ -71,7 +71,7 @@ export default function DashboardLayout() {
                             <span className="font-body-md">Consultations</span>
                         </Link>
 
-                        <Link onClick={closeSidebarMobile} to="/patients" className={`flex items-center gap-md px-md py-sm rounded-lg transition-all ${location.pathname.startsWith('/patients') ? 'text-primary font-bold bg-secondary-container/30' : 'text-on-tertiary-fixed-variant hover:bg-surface-container-highest'}`}>
+                        <Link onClick={closeSidebarMobile} to="/patient" className={`flex items-center gap-md px-md py-sm rounded-lg transition-all ${location.pathname.startsWith('/patients') ? 'text-primary font-bold bg-secondary-container/30' : 'text-on-tertiary-fixed-variant hover:bg-surface-container-highest'}`}>
                             <span className="material-symbols-outlined text-primary">group</span>
                             <span className="font-body-md">Patients</span>
                         </Link>

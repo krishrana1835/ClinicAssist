@@ -4,12 +4,9 @@ import { useGetClinics } from '../Clinic/useClinic';
 import ScanQR from '../common/ScanQR';
 import GenerateQR from '../common/GenerateQR';
 import RecentActivity from './RecentActivity';
+import { dateFormatter } from '../../utils/utils';
 
-const formattedDate = new Date().toLocaleDateString("en-US", {
-  weekday: "long",
-  month: "short",
-  day: "numeric",
-});
+const formattedDate = dateFormatter(new Date().toString());
 
 const DoctorDashboard = () => {
     const { user } = useAuthContext();

@@ -103,7 +103,7 @@ export default function ListClinics({ data, onClinicClick, onEditClinic }) {
                                 <tr
                                     key={row.id}
                                     className="group hover:bg-surface-container-low transition-colors cursor-pointer"
-                                    onClick={() => onClinicClick(row.original.name)} // Keep row clickable for viewing patients
+                                    onClick={() => onClinicClick({clinicId: row.original.clinicId, name: row.original.name})} // Keep row clickable for viewing patients
                                 >
                                     {row.getVisibleCells().map(cell => (
                                         <td key={cell.id} className="px-lg py-md">
