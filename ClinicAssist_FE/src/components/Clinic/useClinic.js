@@ -58,30 +58,3 @@ export const useGetClinicPatients = (clinicId, recent, options = {}) => {
 		...options,
 	})
 }
-
-const fetchFilteredPatients = async ({ queryKey }) => {
-    const [, { doctorId, name, clinicId, lastVisit, page, pageSize }] = queryKey;
-    const params = {
-        name,
-        clinicId,
-        lastVisit,
-        page,
-        pageSize,
-    };
-    // Filter out undefined or null values from params
-    const filteredParams = Object.fromEntries(
-        Object.entries(params).filter(([, value]) => value !== undefined && value !== null && value !== '')
-    );
-
-    const { data } = await api.get(`/api/Clinic/Patient/Filter/${doctorId}`, { params: filteredParams });
-    return data.data;
-};
-
-export const useGetFilteredPatients = (doctorId, name, clinicId, lastVisit, page, pageSize) => {
-    return useQuery({
-        queryKey: ['filteredPatients', { doctorId, name, clinicId, lastVisit, page, pageSize }],
-        queryFn: fetchFilteredPatients,
-        enabled: !!doctorId, // Only fetch if doctorId is available
-        keepPreviousData: true,
-    });
-};

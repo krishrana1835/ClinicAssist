@@ -335,6 +335,19 @@ export default function Login() {
 											)}
 										</div>
 										<div>
+											<label className="block text-sm font-medium text-gray-700 mb-1.5">Gender</label>
+											<select {...register("gender")} defaultValue="Male" className="w-full border border-gray-300 rounded-xl px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all shadow-sm">
+												<option value="Male">Male</option>
+												<option value="Female">Female</option>
+												<option value="Other">Other</option>
+											</select>
+											{errors.gender && (
+												<p className="text-red-500 text-xs mt-1">
+													{errors.gender.message}
+												</p>
+											)}
+										</div>
+										<div>
 											<label className="block text-sm font-medium text-gray-700 mb-1.5">Blood Group</label>
 											<select {...register("bloodGroup")} className="w-full border border-gray-300 rounded-xl px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all shadow-sm">
 												<option value="">Select Blood Group</option>

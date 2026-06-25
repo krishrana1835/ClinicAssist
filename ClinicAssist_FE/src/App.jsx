@@ -13,6 +13,8 @@ import DoctorProfile from './components/Profile/DoctorProfile';
 import DoctorDashboard from './components/Dashboard/DoctorDashboard';
 import ClinicSettings from './components/Clinic/ClinicSettings';
 import PatientDirectory from './components/Patient/PatientDirectory';
+import PatientInfromation from './components/Patient/PatientInfromation';
+import { ClinicProvider } from './context/ClinicContext';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -60,7 +62,13 @@ const router = createBrowserRouter([
             path: '/profile',
             element: <DoctorProfile />
           },
-          { path: 'patient', element: <PatientDirectory /> }
+          {
+            path: 'patient',
+            children: [
+              { index: true, element: <PatientDirectory /> },
+              { path: ':patientId', element: <PatientInfromation /> },
+            ]
+          }
         ]
       }
     ]
@@ -75,8 +83,10 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <Toaster position="top-right" />
-        <RouterProvider router={router} />
+        <ClinicProvider>
+          <Toaster position="top-right" />
+          <RouterProvider router={router} />
+        </ClinicProvider>
       </AuthProvider>
     </QueryClientProvider>
   );

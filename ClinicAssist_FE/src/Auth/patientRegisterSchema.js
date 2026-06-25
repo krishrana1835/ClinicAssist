@@ -14,6 +14,9 @@ export const patientRegisterSchema = z.object({
     (val) => Number(val),
     z.number().positive("Weight must be a positive number").min(1, "Weight is required")
   ),
+  gender: z.enum(["Male", "Female", "Other"], {
+    errorMap: () => ({ message: "Please select a gender" }),
+  }),
 }).refine((data) => data.password === data.confirmPassword, {
   message: "Passwords don't match",
   path: ["confirmPassword"],
@@ -28,4 +31,5 @@ export const patientRegisterDefaultValues = {
   dob: "",
   bloodGroup: "",
   weight: "",
+  gender: "Male",
 };

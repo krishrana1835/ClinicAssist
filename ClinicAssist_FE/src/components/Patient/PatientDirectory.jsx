@@ -1,9 +1,10 @@
 import { useState, useMemo, useEffect } from 'react';
 import { useReactTable, getCoreRowModel, flexRender, createColumnHelper } from '@tanstack/react-table';
-import { useGetFilteredPatients } from '../Clinic/useClinic';
+import { useGetFilteredPatients } from './usePatient';
 import { dateFormatter } from '../../utils/utils';
 import { useGetClinics } from '../Clinic/useClinic';
 import { useAuthContext } from '../../Auth/AuthContext'
+import { Link } from 'react-router-dom';
 
 const columnHelper = createColumnHelper();
 
@@ -90,12 +91,12 @@ export default function PatientDirectory() {
         columnHelper.display({
             id: 'actions',
             header: () => <div className="text-right w-full">Actions</div>,
-            cell: () => (
+            cell: (info) => (
                 <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <button className="text-primary hover:bg-primary-container/10 p-2 rounded-lg transition-colors text-body-sm font-semibold flex items-center gap-1">
+                    <Link to={`/patient/${info.row.original.patientId}`} className="text-primary hover:bg-primary-container/10 p-2 rounded-lg transition-colors text-body-sm font-semibold flex items-center gap-1">
                         <span className="material-symbols-outlined text-[18px]">visibility</span>
                         View
-                    </button>
+                    </Link>
                     <button className="bg-primary text-white px-3 py-1.5 rounded-lg text-xs font-semibold active:scale-95 transition-all">New Case</button>
                 </div>
             ),

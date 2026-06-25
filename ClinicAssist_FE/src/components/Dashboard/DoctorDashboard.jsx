@@ -1,19 +1,17 @@
 import { useState } from 'react';
 import { useAuthContext } from '../../Auth/AuthContext';
-import { useGetClinics } from '../Clinic/useClinic';
 import ScanQR from '../common/ScanQR';
 import GenerateQR from '../common/GenerateQR';
 import RecentActivity from './RecentActivity';
 import { dateFormatter } from '../../utils/utils';
+import { useClinicContext } from '../../context/ClinicContext';
 
 const formattedDate = dateFormatter(new Date().toString());
 
 const DoctorDashboard = () => {
     const { user } = useAuthContext();
-    const { data: clinicsList = [], isLoading: isLoadingClinics } = useGetClinics(user?.roleId);
-    const [selectedClinicId, setSelectedClinicId] = useState(null);
+    const { clinicsList, isLoadingClinics, selectedClinic, setSelectedClinicId } = useClinicContext();
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    const selectedClinic = clinicsList.find((clinic) => clinic.clinicId === selectedClinicId) || clinicsList[0] || null;
 
     const handleScanClick = () => {
         console.log("Open Scanner clicked");
