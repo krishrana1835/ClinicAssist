@@ -10,6 +10,7 @@
         public DateTime? Dob { get; set; }
         public string? BloodGroup { get; set; }
         public int Weight { get; set; }
+        public string Gender { get; set; } = null!;
         public DateTime? LastVisit { get; set; }
     }
 }

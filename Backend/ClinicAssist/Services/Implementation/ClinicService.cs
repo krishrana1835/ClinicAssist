@@ -55,6 +55,7 @@ namespace ClinicAssist.Services.Implementation
                     Dob = r.patient.dob,
                     BloodGroup = r.patient.blood_group,
                     Weight = r.patient.weight,
+                    Gender = r.patient.gender,
                     LastVisit = r.last_visit
                 })
                 .ToListAsync();
@@ -170,6 +171,7 @@ namespace ClinicAssist.Services.Implementation
                     Dob = r.dob,
                     BloodGroup = r.blood_group,
                     Weight = r.weight,
+                    Gender = r.gender,
                     LastVisit = r.Patient_Clinic_Registrations
                         .Where(pc => !clinicId.HasValue || pc.clinic_id == clinicId.Value)
                         .Select(pc => pc.last_visit)

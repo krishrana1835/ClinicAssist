@@ -9,6 +9,7 @@ namespace ClinicAssist.Models
         public DateTime? dob { get; set; }
         public string? blood_group { get; set; }
         public int weight { get; set; }
+        public string gender { get; set; } = string.Empty;
 
         public User? user { get; set; }
         public ICollection<Patient_Clinic_Registration> Patient_Clinic_Registrations { get; set; } = new List<Patient_Clinic_Registration>();

@@ -1,4 +1,5 @@
 ﻿using ClinicAssist.Data;
+using ClinicAssist.Dtos.Patient;
 using ClinicAssist.Dtos.Users;
 using ClinicAssist.Exceptions;
 using ClinicAssist.Models;
@@ -48,6 +49,7 @@ namespace ClinicAssist.Services.Implementation
                     dob = patientDto.Dob,
                     blood_group = patientDto.BloodGroup,
                     weight = patientDto.Weight,
+                    gender = patientDto.Gender
                 };
 
                 _context.Patients.Add(patient);
@@ -61,5 +63,27 @@ namespace ClinicAssist.Services.Implementation
                 throw;
             }
         }
+        public async Task<PatientResponseDto> GetPatientByIdAsync(int patientId)
+        {
+            var patient = await _context.Patients
+                .Include(p => p.user)
+                .FirstOrDefaultAsync(p => p.patient_id == patientId);
+
+            if (patient == null || patient.user == null)
+            {
+                throw new NotFoundException("Patient not found");
+            }
+
+            return new PatientResponseDto
+            {
+                Email = patient.user.email,
+                Name = patient.user.name,
+                ContactNo = patient.user.contact_number,
+                Dob = patient.dob,
+                BloodGroup = patient.blood_group,
+                Weight = patient.weight,
+            };
+        }
+
     }
 }

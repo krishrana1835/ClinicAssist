@@ -16,6 +16,13 @@ namespace ClinicAssist.Controllers
             _patientService = patientService;
         }
 
+        [HttpGet("{patientId}")]
+        public async Task<IActionResult> GetPatientByIdAsync(int patientId)
+        {
+            var patient = await _patientService.GetPatientByIdAsync(patientId);
+            return StatusCode(200, new ApiResponse<object>(true, "Patient details fetched", patient));
+        }
+
         [HttpPost("")]
         public async Task<IActionResult> CreatePatient(RegisterPatientDto register)
         {

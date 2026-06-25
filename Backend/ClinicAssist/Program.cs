@@ -15,6 +15,7 @@ builder.Services.AddScoped<IDoctorService, DoctorService>();
 builder.Services.AddScoped<IPatientService, PatientService>();
 builder.Services.AddScoped<IClinicService, ClinicService>();
 builder.Services.AddScoped<IMedicineService, MedicineService>();
+builder.Services.AddScoped<IDocumentService, DocumentService>();
 
 builder.Services.AddControllers();
 
@@ -86,6 +87,8 @@ if (app.Environment.IsDevelopment())
 app.UseCors("AllowFrontend");
 
 app.UseHttpsRedirection();
+
+app.UseStaticFiles();
 
 app.UseMiddleware<ExceptionMiddleware>();
 
