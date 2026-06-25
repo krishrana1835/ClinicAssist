@@ -10,7 +10,7 @@ const ErrorPage = () => {
       <p className="text-lg text-gray-700 mb-4">
         Sorry, an unexpected error has occurred.
       </p>
-      <div className="text-gray-500 mb-8 bg-gray-200 p-4 rounded max-w-lg overflow-auto text-left">
+      <div className="text-gray-500 mb-8 bg-gray-200 p-4 rounded overflow-auto text-left">
         <i>{error.statusText || error.message || 'Unknown Error'}</i>
       </div>
       <Link
